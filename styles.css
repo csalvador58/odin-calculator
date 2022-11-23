@@ -1,0 +1,47 @@
+:root {
+
+}
+
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+html {
+    box-sizing: border-box;
+    font-size: 62.5%;
+    scroll-behavior: smooth;
+}
+
+.input, .results {
+    font-size: 3em;
+    display: block;
+}
+
+
+h1 {
+    font-size: 5em;
+}
+
+.keys {
+    width: 45em;
+    display: grid;
+    grid-template-columns: auto auto auto auto auto;
+    grid-gap: 1em;
+    background-color: blue;
+    padding: 2em;
+}
+
+.keys > div {
+    background-color: lightblue;
+    text-align: center;
+    font-size: 3em;
+}
+
+
+
