@@ -1,6 +1,5 @@
 // Initialize variables
 const INPUT_STACK = [];
-const INPUT2 = [];
 let RESULTS;
 let OPERATOR_FLAG = false;
 let DECIMAL_FLAG = false;
@@ -33,15 +32,17 @@ function getResults() {
     let first_number = [];
     let second_number = [];
     let operand;
-    let isFirstNumber = true;
+    let isFirstNumber = false;
 
     while (INPUT_STACK.length > 0) {
         let element = INPUT_STACK.pop();
+        console.log(element)
         if((element === "add") 
             || (element === "subtract") 
             || (element === "mul") 
             || (element === "div")) {
             operand = element;
+            isFirstNumber = true;
         } else {
             isFirstNumber === true
                 ? first_number.push(element)
@@ -49,13 +50,21 @@ function getResults() {
         }
     }
 
-    console.log(first_number.reverse().join(''));
-    console.log(second_number.reverse().join(''));
+ 
+    console.log(first_number)
+    console.log(second_number)
+    let num1 = parseFloat(first_number.reverse().join(''));
+    let num2 = parseFloat(second_number.reverse().join('')); 
+    console.log(`1st num: ${num1}`);
+    console.log(`2nd num: ${num2}`);
+    keyOperator(operand, num1, num2);
+    displayResults();
 
-    keyOperator(first_number.reverse().join(''), 
-                second_number.reverse().join(''),
-                operand);
+}
 
+function resetFlags() {
+    OPERATOR_FLAG = false;
+    DECIMAL_FLAG = false;
 }
 
 // If key is a number
@@ -112,6 +121,21 @@ function keyOperator(operator, num1, num2) {
     }
 }
     
+function print(key) {
+    if((key === "add") 
+            || (key === "subtract") 
+            || (key === "mul") 
+            || (key === "div")
+            || (key === "equals")
+            || (key === "sign")
+            ) {
+        displayInput.innerText = "";
+    } else {
+        if(key === 'decimal') displayInput.innerText += '.';
+        else displayInput.innerText += key;
+    }
+}
+
 // If key is equals
 function displayResults() {
     displayInput.innerText = "";
@@ -119,101 +143,24 @@ function displayResults() {
 }
 
 function keyAction(e) {
-
-    console.log(e.target)
-
     const key = Array.from(e.target.id).slice(4).join('');
 
-    const number = /\d/;
+    console.log(`key: ${key}`)
 
-    console.log(number.test(key))
 
-    number.test(key) 
-        ? store(key)
-        : key === 'decimal' && DECIMAL_FLAG !== true;
-        ? decimal()
-        : key === 'equals'
+    key === 'equals'
         ? getResults()
-        : false
-        
+        : key === 'decimal' && DECIMAL_FLAG !== true
+        ? decimal()
+        : key !== ''
+        ? store(key)
+        : console.log('skip');
 
-    // switch (key) {
-    //     case number.test(key):
-    //         keyNumber(0);
-    //         break;
-    //     case 'key-1':
-    //         keyNumber(1);
-    //         break;
-    //     case 'key-2':
-    //         keyNumber(2);
-    //         break;
-    //     case 'key-3':
-    //         keyNumber(3);
-    //         break;
-    //     case 'key-4':
-    //         keyNumber(4);
-    //         break;
-    //     case 'key-5':
-    //         keyNumber(5);
-    //         break;
-    //     case 'key-6':
-    //         keyNumber(6);
-    //         break;
-    //     case 'key-7':
-    //         keyNumber(7);
-    //         break;
-    //     case 'key-8':
-    //         keyNumber(8);
-    //         break;
-    //     case 'key-9':
-    //         keyNumber(9);
-    //         break;
-    //     case 'key-DEL':
-    //         keyDelAC(false);
-    //         break;
-    //     case 'key-AC':
-    //         keyDelAC(true);
-    //         break;
-    //     case 'key-mul':
-    //         if (OPERATOR_FLAG) {
-    //             keyOperator('mul'); 
-    //         } else {
-    //             OPERATOR_FLAG = true;
-    //         }
-            
-    //         break;
-    //     case 'key-div':
-    //         if (OPERATOR_FLAG) {
-    //             keyOperator('div'); 
-    //         } else {
-    //             OPERATOR_FLAG = true;
-    //         }
-    //         break;
-    //     case 'key-add':
-    //         if (OPERATOR_FLAG) {
-    //             keyOperator('add'); 
-    //         } else {
-    //             OPERATOR_FLAG = true;
-    //         }
-    //         break;
-    //     case 'key-subtract':
-    //         if (OPERATOR_FLAG) {
-    //             keyOperator('subtract'); 
-    //         } else {
-    //             OPERATOR_FLAG = true;
-    //         }
-    //         break;
-    //     case 'key-equals':
-    //         displayResults();
-    //         OPERATOR_FLAG = false;
-    //         INPUT.splice(0, INPUT.length);
-    //         INPUT2.splice(0, INPUT2.length);
+    if((key === "add") 
+        || (key === "subtract") 
+        || (key === "mul") 
+        || (key === "div")
+        ) DECIMAL_FLAG = false;
 
-    //         break;
-        
-    
-    //     default:
-    //         break;
-    // }
-    
+    print(key);
 }
