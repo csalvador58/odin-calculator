@@ -151,8 +151,9 @@ function print(key) {
             displayInput.innerText = text.join('');
         }
     } else if (key === "DEL") {
-        let input = Array.from(displayInput.innerText).reverse().pop();
-        displayInput.innerText = input;
+        let input = Array.from(displayInput.innerText);
+        input.pop();
+        displayInput.innerText = input.join('');
     } else {
         displayInput.innerText += key;
     }
