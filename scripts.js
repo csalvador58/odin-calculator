@@ -33,8 +33,10 @@ function getResults() {
     let first_number = [];
     let second_number = [];
     let operand;
-    let isFirstNumber = false;
+    let isFirstNumber = true;
     let isNumFloat = false;
+
+    INPUT_STACK.reverse();
 
     while (INPUT_STACK.length > 0) {
         let element = INPUT_STACK.pop();
@@ -43,8 +45,28 @@ function getResults() {
             || (element === "subtract") 
             || (element === "mul") 
             || (element === "div")) {
-            operand = element;
-            isFirstNumber = true;
+
+            if(! isFirstNumber) {
+                let num1, num2;
+
+                if (isNumFloat) {
+                    num1 = parseFloat(first_number.join(''));
+                    num2 = parseFloat(second_number.join('')); 
+                } else {
+                    num1 = parseInt(first_number.join(''));
+                    num2 = parseInt(second_number.join('')); 
+                }
+                keyOperator(operand, num1, num2);
+                console.log(`Results: ${RESULTS}`)
+                first_number = []; 
+                second_number = [];
+                first_number.push(RESULTS);
+                operand = element;
+                
+            } else {
+                operand = element;
+                isFirstNumber = false;
+            }
         } else {
             if (element === '.') isNumFloat = true;
 
@@ -61,11 +83,11 @@ function getResults() {
     let num1, num2;
 
     if (isNumFloat) {
-        num1 = parseFloat(first_number.reverse().join(''));
-        num2 = parseFloat(second_number.reverse().join('')); 
+        num1 = parseFloat(first_number.join(''));
+        num2 = parseFloat(second_number.join('')); 
     } else {
-        num1 = parseInt(first_number.reverse().join(''));
-        num2 = parseInt(second_number.reverse().join('')); 
+        num1 = parseInt(first_number.join(''));
+        num2 = parseInt(second_number.join('')); 
     }
 
     console.log(`1st num: ${num1}`);
@@ -142,6 +164,7 @@ function print(key) {
             || (key === "AC")
     ) {
         displayInput.innerText = "";
+        displayResult.innerText = "";
     } else if (key === 'decimal') { 
         if (DECIMAL_FLAG === false) displayInput.innerText += '.';
     } else if (key === 'sign') { 
